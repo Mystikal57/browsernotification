@@ -223,13 +223,13 @@ LIMIT $limit";
          return false;
       }
 
-      $table = 'glpi_ticketfollowups';
+      $table = 'glpi_itilfollowups';
 
       $select = array();
       $join = array();
       $where = array();
 
-      $select[] = "`$table`.tickets_id AS ticket_id";
+      $select[] = "`$table`.items_id AS ticket_id";
       $select[] = "`$table`.content";
       $select[] = "`$table`.is_private";
 
@@ -237,7 +237,7 @@ LIMIT $limit";
          $where[] = "`$table`.users_id <> " . Session::getLoginUserID(); //Ignore current user
       }
 
-      $join[] = "INNER JOIN `glpi_tickets` ON `glpi_tickets`.id = `$table`.tickets_id";
+      $join[] = "INNER JOIN `glpi_tickets` ON `glpi_tickets`.id = `$table`.items_id";
       if ($CFG_BROWSER_NOTIF['ignore_deleted_items']) {
          $where[] = "`glpi_tickets`.is_deleted = 0"; //Not deleted
       }
@@ -245,7 +245,7 @@ LIMIT $limit";
       $where[] = getEntitiesRestrictRequest("", 'glpi_tickets', '', $_SESSION['glpiactiveentities'], false, true);
 
       //Only related ticket with user
-      $join[] = "INNER JOIN `glpi_tickets_users` ON `glpi_tickets_users`.tickets_id = `$table`.tickets_id";
+      $join[] = "INNER JOIN `glpi_tickets_users` ON `glpi_tickets_users`.tickets_id = `$table`.items_id";
       $where[] = "`glpi_tickets_users`.users_id = " . Session::getLoginUserID();
 
       if ($canseepublic && !$canseeprivate) {
